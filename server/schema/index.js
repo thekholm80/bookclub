@@ -15,9 +15,16 @@ const typeDefs = `
     success: Boolean!
   }
 
+  type Book {
+    title: String!
+    author: String!
+    owner: User
+  }
+
   type Query {
     login(displayName: String!, password: String!): Status
     getUserInfo(displayName: String!): User
+    getAllBooks: [Book]
   }
 
   type Mutation {
