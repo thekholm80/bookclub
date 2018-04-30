@@ -1,6 +1,8 @@
 const { login } = require('./queries/login');
 const { getUserInfo } = require('./queries/getUserInfo');
+
 const { register } = require('./mutations/register');
+const { addBook } = require('./mutations/addBook');
 
 module.exports = {
   Query: {
@@ -8,6 +10,7 @@ module.exports = {
     getUserInfo
   },
   Mutation: {
-    register
+    register,
+    addBook
   }
 };
