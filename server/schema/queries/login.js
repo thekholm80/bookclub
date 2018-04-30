@@ -25,7 +25,7 @@ module.exports = {
     const match = await verifyPassword(password, user.hash).catch(err => { throw err; });
 
     if (match) {
-      const cookieToken = await jwt.sign(user, JWT_SECRET, { expiresIn: '14d' });
+      const cookieToken = await jwt.sign(user, JWT_SECRET, { expiresIn: '14d' }).catch(err => { throw err; });
       const expDate = new Date(Date.now() + (1000 * 60 * 60 * 24 * 12));
       res.cookie('bookclub', cookieToken, { httpOnly: true, expires: expDate });
       return { userName: user.userName, success: true };
