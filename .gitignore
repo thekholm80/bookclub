@@ -1,0 +1,4 @@
+node_modules
+production
+public
+.env
