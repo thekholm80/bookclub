@@ -2,9 +2,11 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
+
+// dev only: remove
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
 
 const schema = require('./schema');
 const { PORT, JWT_SECRET } = require('./utils/config');
@@ -32,8 +34,8 @@ const start = async () => {
 
   // dev only: remove cors() for production
   // req is exposed and passed into context to parse jwt tokens
-  app.use('/api', bodyParser.json(), cors(corsOptions), graphqlExpress(req => ({
-    context: { mongo, req },
+  app.use('/api', bodyParser.json(), cors(corsOptions), graphqlExpress((req, res) => ({
+    context: { mongo, req, res },
     schema
   })));
 
@@ -61,7 +63,7 @@ const start = async () => {
     // create expiration date for cookie (ms * s * m * h * d)
     const expDate = new Date(Date.now() + (1000 * 60 * 60 * 24 * 12));
     // set token in cookie, cookie in header
-    res.cookie('BookClub', cookieToken, { httpOnly: true, expires: expDate });
+    res.cookie('BookClubDev', cookieToken, { httpOnly: true, expires: expDate });
     res.redirect('/dev/graphiql');
   });
 
