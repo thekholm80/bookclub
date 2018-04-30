@@ -9,26 +9,27 @@ const { JWT_SECRET } = require('../../utils/config');
 */
 
 module.exports = {
-  login: async (_, { userName, password }, { mongo: { Users }, res }) => {
+  login: async (_, { displayName, password }, { mongo: { Users }, res }) => {
     /*
       This query will request user info from the database (login action) and
       if successful set a jwt cookie in response header
 
       :_: <obj> unused
-      :userName: <str> username of user logging in
+      :displayName: <str> username of user logging in
       :password: <str> passwrod of user logging in
       :Users: <obj> MongoDB collection instance
-      :returns: <obj> object containing user data
+      :returns: <obj> success: true if login successful
     */
 
-    const user = await Users.findOne({ userName }).catch(err => { throw err; });
-    const match = await verifyPassword(password, user.hash).catch(err => { throw err; });
-
-    if (match) {
-      const cookieToken = await jwt.sign(user, JWT_SECRET, { expiresIn: '14d' }).catch(err => { throw err; });
-      const expDate = new Date(Date.now() + (1000 * 60 * 60 * 24 * 12));
-      res.cookie('bookclub', cookieToken, { httpOnly: true, expires: expDate });
-      return { userName: user.userName, success: true };
+    const dbUserSearch = await Users.findOne({ displayName }).catch(err => { throw err; });
+    if (dbUserSearch) {
+      const match = await verifyPassword(password, dbUserSearch.hash).catch(err => { throw err; });
+      if (match) {
+        const cookieToken = await jwt.sign(dbUserSearch, JWT_SECRET, { expiresIn: '14d' });
+        const expDate = new Date(Date.now() + (1000 * 60 * 60 * 24 * 12));
+        res.cookie('bookclub', cookieToken, { httpOnly: true, expires: expDate });
+        return { displayName: dbUserSearch.displayName, success: true };
+      }
     }
     return { success: false };
   }

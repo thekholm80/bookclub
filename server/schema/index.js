@@ -3,7 +3,7 @@ const resolvers = require('./resolvers');
 
 const typeDefs = `
   type User {
-    userName: String
+    displayName: String
     firstName: String
     lastName: String
     city: String
@@ -16,11 +16,12 @@ const typeDefs = `
   }
 
   type Query {
-    login(userName: String!, password: String!): Status
+    login(displayName: String!, password: String!): Status
+    getUserInfo(displayName: String!): User
   }
 
   type Mutation {
-    register(userName: String!, password: String!): Status
+    register(displayName: String!, password: String!): Status
   }
 `;
 

@@ -8,6 +8,33 @@ module.exports = async () => {
   const client = await MongoClient.connect(DB_URL).catch(err => { throw err; });
 
   return {
-    Users: client.db('bookclub').collection('users')
+    Users: client.db('bookclub').collection('users'),
+    Books: client.db('bookclub').collection('books'),
+    Trades: client.db('bookclub').collection('trades')
   };
 };
+
+/*
+  Collection structure:
+
+  db.users.find().pretty():
+  {
+    "_id" : ObjectId("..."),
+    "displayName" : "...",
+    "hash" : "...",
+    "firstName" : "...",
+    "lastName" : "...",
+    "city" : "...",
+    "state" : "..."
+  }
+
+  db.books.find().pretty():
+  {
+    "_id" : ObjectId("...")
+  }
+
+  db.trades.find().pretty():
+  {
+    "_id" : ObjectId("...")
+  }
+*/

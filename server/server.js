@@ -53,10 +53,8 @@ const start = async () => {
 
     // dummy user data
     const user = {
-      display_name: 'lumpy',
-      first_name: 'lenny',
-      last_name: 'guy',
-      password: 'thisIsAHashedString'
+      displayName: 'lumpy',
+      hash: 'thisIsAHashedString'
     };
     // create tokens
     const cookieToken = await jwt.sign(user, JWT_SECRET, { expiresIn: '14d' });
