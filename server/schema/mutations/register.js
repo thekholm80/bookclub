@@ -17,7 +17,7 @@ module.exports = {
 
     if (!existing) {
       const hash = await hashPassword(password);
-      Users.insertOne({ displayName, hash });
+      Users.insertOne({ displayName, hash, books: [] });
       return { success: true };
     }
     return { success: false };

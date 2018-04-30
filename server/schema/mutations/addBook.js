@@ -6,7 +6,7 @@ const { JWT_SECRET } = require('../../utils/config');
 module.exports = {
   addBook: async (_, { title, author }, { mongo: { Users, Books }, req: { cookies } }) => {
     /*
-      Inserts new book into database
+      Inserts new book into database, updates user's book list
 
       :_: unused
       :title: <str> title of book
@@ -24,11 +24,17 @@ module.exports = {
       if (err) return { success: false };
       // get owner's _id from Users collection
       const { _id } = await Users.findOne({ displayName }).catch(error => { throw error; });
-      Books.insertOne({
+      // insert new book into db
+      const result = await Books.insertOne({
         title,
         author,
         owner: ObjectID(_id)
       }).catch(error => { throw error; });
+      // push new book id into users's book list
+      Users.findOneAndUpdate(
+        { _id: ObjectID(_id) },
+        { $push: { books: result.insertedId } }
+      ).catch(error => { throw error; });
       return { success: true };
     });
   }
