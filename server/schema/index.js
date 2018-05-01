@@ -31,6 +31,7 @@ const typeDefs = `
   type Mutation {
     register(displayName: String!, password: String!): Status
     addBook(title: String!, author: String!): Status
+    requestTrade(bookID: String!): Status
   }
 `;
 

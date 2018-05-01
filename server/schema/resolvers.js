@@ -5,6 +5,7 @@ const { getBooksByOwner } = require('./queries/getBooksByOwner');
 
 const { register } = require('./mutations/register');
 const { addBook } = require('./mutations/addBook');
+const { requestTrade } = require('./mutations/requestTrade');
 
 module.exports = {
   Query: {
@@ -15,6 +16,7 @@ module.exports = {
   },
   Mutation: {
     register,
-    addBook
+    addBook,
+    requestTrade
   }
 };

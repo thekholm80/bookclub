@@ -14,10 +14,14 @@ module.exports = {
     */
 
     const existing = await Users.findOne({ displayName });
-
     if (!existing) {
       const hash = await hashPassword(password);
-      Users.insertOne({ displayName, hash, books: [] });
+      Users.insertOne({
+        displayName,
+        hash,
+        books: [],
+        pendingTrades: []
+      });
       return { success: true };
     }
     return { success: false };

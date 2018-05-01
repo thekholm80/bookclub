@@ -26,7 +26,9 @@ module.exports = async () => {
     "lastName" : "...",
     "city" : "...",
     "state" : "...",
-    "books" : [db.books._id, db.books._id, db.books._id]
+    "books" : [db.books._id, db.books._id, db.books._id],
+    "pendingTrades" : [db.trades._id, db.trades._id, db.trades._id],
+    "pendingRequests" : [db.trades._id, db.trades._id, db.trades._id]
   }
 
   db.books.find().pretty():
@@ -41,8 +43,8 @@ module.exports = async () => {
   {
     "_id" : ObjectId("..."),
     "book" : db.books._id,
-    "from" : db.users._id,
-    "to" : db.users._id,
+    "owner" : db.users._id,
+    "requestedBy" : db.users._id,
     "status" : "(pending||rejected||complete)"
   }
 */
