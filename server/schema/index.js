@@ -12,7 +12,7 @@ const typeDefs = `
   }
 
   type Status {
-    success: Boolean!
+    status: String!
   }
 
   type Book {

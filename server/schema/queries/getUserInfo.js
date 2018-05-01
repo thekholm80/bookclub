@@ -16,15 +16,12 @@ module.exports = {
     */
 
     const dbUserSearch = await Users.findOne({ displayName }).catch(err => { throw err; });
-    return (dbUserSearch
-      ? {
-        displayName: dbUserSearch.displayName,
-        firstName: dbUserSearch.firstName,
-        lastName: dbUserSearch.lastName,
-        city: dbUserSearch.city,
-        state: dbUserSearch.state,
-        success: true
-      }
-      : { success: false });
+    return ({
+      displayName: dbUserSearch.displayName,
+      firstName: dbUserSearch.firstName,
+      lastName: dbUserSearch.lastName,
+      city: dbUserSearch.city,
+      state: dbUserSearch.state
+    });
   }
 };

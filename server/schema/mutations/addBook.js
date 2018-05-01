@@ -15,13 +15,13 @@ module.exports = {
       :Users: <obj> mongodb collection instance
       :Books: <obj> mongodb collection instance
       :cookies: <obj> cookies parsed from express request object
-      :returns: <obj> success: true if success
+      :returns: <obj> status true if success
     */
 
     // validate jwt token
-    if (!cookies.bookclub) return { success: false };
+    if (!cookies.bookclub) return { status: 'no jwt' };
     return jwt.verify(cookies.bookclub, JWT_SECRET, async (err, { _id }) => {
-      if (err) return { success: false };
+      if (err) return { status: 'invalid jwt' };
       // insert new book into db
       const result = await Books.insertOne({
         title,
@@ -33,7 +33,7 @@ module.exports = {
         { _id: ObjectID(_id) },
         { $push: { books: result.insertedId } }
       ).catch(error => { throw error; });
-      return { success: true };
+      return { status: true };
     });
   }
 };

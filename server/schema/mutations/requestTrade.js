@@ -17,18 +17,19 @@ module.exports = {
       :Books: <obj> mongodb collection instance
       :Trades: <obj> mongodb collection instance
       :cookies: <obj> cookies parsed out of express req object
+      :returns: <obj> status true if success
     */
 
     // validate jwt token
-    if (!cookies.bookclub) return { success: false };
+    if (!cookies.bookclub) return { status: 'no jwt' };
     return jwt.verify(cookies.bookclub, JWT_SECRET, async (error, { _id: userId }) => {
-      if (error) return { success: false };
+      if (error) return { status: 'invalid jwt' };
       // find the book
       const { owner } = await Books.findOne({
         _id: ObjectID(bookID)
       }).catch(err => { throw err; });
       // ensure owner isn't requesting to trade their own book
-      if (owner.equals(userId)) return { success: false };
+      if (owner.equals(userId)) return { status: 'cannot trade own book' };
       // create a new doc in Trades
       const newTrade = await Trades.insertOne({
         bookID: ObjectID(bookID),
@@ -46,7 +47,7 @@ module.exports = {
         { _id: ObjectID(userId) },
         { $push: { pendingRequests: newTrade.insertedId } }
       ).catch(err => { throw err; });
-      return { success: true };
+      return { status: true };
     });
   }
 };

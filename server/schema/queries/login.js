@@ -28,9 +28,9 @@ module.exports = {
         const cookieToken = await jwt.sign(user, JWT_SECRET, { expiresIn: '14d' });
         const expDate = new Date(Date.now() + (1000 * 60 * 60 * 24 * 12));
         res.cookie('bookclub', cookieToken, { httpOnly: true, expires: expDate });
-        return { success: true };
+        return { status: true };
       }
     }
-    return { success: false };
+    return { status: false };
   }
 };

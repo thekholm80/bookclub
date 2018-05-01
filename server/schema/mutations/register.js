@@ -10,7 +10,7 @@ module.exports = {
       :displayName: <str> Username requested by new user
       :password: <str> Password requested by new user
       :Users: <obj> MongoDB collection instance
-      :returns: <bool> true if new user created
+      :returns: <bool> status true if new user created
     */
 
     const existing = await Users.findOne({ displayName });
@@ -22,8 +22,8 @@ module.exports = {
         books: [],
         pendingTrades: []
       });
-      return { success: true };
+      return { status: true };
     }
-    return { success: false };
+    return { status: false };
   }
 };
