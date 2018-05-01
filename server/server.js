@@ -6,10 +6,9 @@ const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
 
 // dev only: remove
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
 
 const schema = require('./schema');
-const { PORT, JWT_SECRET } = require('./utils/config');
+const { PORT } = require('./utils/config');
 const connectMongo = require('./utils/mongo-connector');
 
 const start = async () => {
@@ -40,30 +39,9 @@ const start = async () => {
   })));
 
   // dev only: remove
-  app.use('/dev/graphiql', graphiqlExpress({
+  app.use('/graphiql', graphiqlExpress({
     endpointURL: '/api'
   }));
-
-  // dev only: remove
-  app.use('/graphiql', async (req, res) => {
-    /*
-      this endpoint is for development, allowing jwt to be set with
-      dummy user data then the request is forwareded to /dev/graphiql
-    */
-
-    // dummy user data
-    const user = {
-      displayName: 'lumpy',
-      hash: 'thisIsAHashedString'
-    };
-    // create tokens
-    const cookieToken = await jwt.sign(user, JWT_SECRET, { expiresIn: '14d' });
-    // create expiration date for cookie (ms * s * m * h * d)
-    const expDate = new Date(Date.now() + (1000 * 60 * 60 * 24 * 12));
-    // set token in cookie, cookie in header
-    res.cookie('BookClubDev', cookieToken, { httpOnly: true, expires: expDate });
-    res.redirect('/dev/graphiql');
-  });
 
   // dev only: resolve for production: res.sendFile(path.join(__dirname, 'public', 'index.html'));
   app.get('/', (req, res) => {
