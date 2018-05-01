@@ -25,6 +25,7 @@ const typeDefs = `
     login(displayName: String!, password: String!): Status
     getUserInfo(displayName: String!): User
     getAllBooks: [Book]
+    getBooksByOwner(displayName: String!): [Book]
   }
 
   type Mutation {

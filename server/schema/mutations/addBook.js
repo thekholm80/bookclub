@@ -20,10 +20,8 @@ module.exports = {
 
     // validate jwt token
     if (!cookies.bookclub) return { success: false };
-    return jwt.verify(cookies.bookclub, JWT_SECRET, async (err, { displayName }) => {
+    return jwt.verify(cookies.bookclub, JWT_SECRET, async (err, { _id }) => {
       if (err) return { success: false };
-      // get owner's _id from Users collection
-      const { _id } = await Users.findOne({ displayName }).catch(error => { throw error; });
       // insert new book into db
       const result = await Books.insertOne({
         title,

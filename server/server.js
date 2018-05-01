@@ -32,7 +32,10 @@ const start = async () => {
   };
 
   // dev only: remove cors() for production
-  // req is exposed and passed into context to parse jwt tokens
+  /*
+    req is exposed and passed into context to parse jwt tokens
+    res is exposed and passed into context to set jwt tokens
+  */
   app.use('/api', bodyParser.json(), cors(corsOptions), graphqlExpress((req, res) => ({
     context: { mongo, req, res },
     schema
