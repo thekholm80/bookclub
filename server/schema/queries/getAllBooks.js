@@ -2,14 +2,14 @@ const { ObjectID } = require('mongodb');
 
 module.exports = {
   getAllBooks: async (_, __, { mongo: { Users, Books } }) => {
-    /*
+    /**
       Queries db for all books
 
-      :_: unused
-      :__: unused
-      :Users: <obj> mongodb collection instance
-      :Books: <obj> mongodb collection instance
-      :returns: <arr> all books in db
+      @param {object} _ unused
+      @param {object} __ unused
+      @param {object} Users mongodb collection instance
+      @param {object} Books mongodb collection instance
+      @returns {array} all books in db
     */
 
     const bookList = await Books.find({}).toArray();

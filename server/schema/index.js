@@ -8,7 +8,6 @@ const typeDefs = `
     lastName: String
     city: String
     state: String
-    success: Boolean
   }
 
   type Status {

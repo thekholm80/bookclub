@@ -2,14 +2,14 @@ const { ObjectID } = require('mongodb');
 
 module.exports = {
   getBooksByOwner: async (_, { displayName }, { mongo: { Users, Books } }) => {
-    /*
+    /**
       Queries db for all books owned by displayName
 
-      :_: unused
-      :displayName: <str> displayName of book owner
-      :Users: <obj> mongodb collection instance
-      :Books: <obj> mongodb collection instance
-      :returns: <arr> array of books
+      @param {object} _ unused
+      @param {string} displayName displayName of book owner
+      @param {object} Users mongodb collection instance
+      @param {object} Books mongodb collection instance
+      @returns {array} array of books
     */
 
     const { _id } = await Users.findOne({ displayName }).catch(err => { throw err; });

@@ -3,14 +3,14 @@ const hashPassword = require('../../utils/hashPassword');
 
 module.exports = {
   register: async (_, { displayName, password }, { mongo: { Users } }) => {
-    /*
+    /**
       Checks database for existing username, if not found inserts new user & hashed password
 
-      :_: <obj> unused
-      :displayName: <str> Username requested by new user
-      :password: <str> Password requested by new user
-      :Users: <obj> MongoDB collection instance
-      :returns: <bool> status true if new user created
+      @param {object} _ unused
+      @param {string} displayName Username requested by new user
+      @param {string} password Password requested by new user
+      @param {object} Users MongoDB collection instance
+      @returns {object} status true if new user created
     */
 
     const existing = await Users.findOne({ displayName });

@@ -5,19 +5,19 @@ const { JWT_SECRET } = require('../../utils/config');
 
 module.exports = {
   requestTrade: async (_, { bookID }, { mongo: { Users, Books, Trades }, req: { cookies } }) => {
-    /*
+    /**
       Logs a trade request into the db by:
         * Creating a new document in Trades
         * Adding new trade id to requestor's User.pendingRequests
         * Adding new trade id to owner's User.pendingTrades
 
-      :_: unused
-      :bookID: <str> id of book requested
-      :Users: <obj> mongodb collection instance
-      :Books: <obj> mongodb collection instance
-      :Trades: <obj> mongodb collection instance
-      :cookies: <obj> cookies parsed out of express req object
-      :returns: <obj> status true if success
+      @param {object} _ unused
+      @param {string} bookID id of book requested
+      @param {object} Users mongodb collection instance
+      @param {object} Books mongodb collection instance
+      @param {object} Trades mongodb collection instance
+      @param {object} cookies cookies parsed out of express req object
+      @returns {object} status true if success
     */
 
     // validate jwt token

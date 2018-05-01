@@ -6,13 +6,13 @@
 
 module.exports = {
   getUserInfo: async (_, { displayName }, { mongo: { Users } }) => {
-    /*
+    /**
       Queries db for user information
 
-      :_: unused
-      :displayName: <str> Query parameter for user data
-      :Users: <obj> mongodb collection instance
-      :returns: <obj> user information
+      @param {object} _ unused
+      @param {string} displayName query parameter for user data
+      @param {object} Users mongodb collection instance
+      @returns {object} user information
     */
 
     const dbUserSearch = await Users.findOne({ displayName }).catch(err => { throw err; });

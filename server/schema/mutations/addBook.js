@@ -5,17 +5,17 @@ const { JWT_SECRET } = require('../../utils/config');
 
 module.exports = {
   addBook: async (_, { title, author }, { mongo: { Users, Books }, req: { cookies } }) => {
-    /*
+    /**
       Inserts new book into database, updates user's book list
 
-      :_: unused
-      :title: <str> title of book
-      :author: <str> author of book
-      :displayName: <str> displayName of book owner
-      :Users: <obj> mongodb collection instance
-      :Books: <obj> mongodb collection instance
-      :cookies: <obj> cookies parsed from express request object
-      :returns: <obj> status true if success
+      @param {object} _ unused
+      @param {string} title title of book
+      @param {string} author author of book
+      @param {string} displayName displayName of book owner
+      @param {object} Users mongodb collection instance
+      @param {object} Books mongodb collection instance
+      @param {object} cookies cookies parsed from express request object
+      @returns {object} status true if success
     */
 
     // validate jwt token
