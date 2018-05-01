@@ -3,12 +3,6 @@ const jwt = require('jsonwebtoken');
 
 const { JWT_SECRET } = require('../../utils/config');
 
-/*
-  TODO:
-
-  Disallow trade requests from/to same id
-*/
-
 module.exports = {
   requestTrade: async (_, { bookID }, { mongo: { Users, Books, Trades }, req: { cookies } }) => {
     /*
@@ -33,11 +27,13 @@ module.exports = {
       const { owner } = await Books.findOne({
         _id: ObjectID(bookID)
       }).catch(err => { throw err; });
+      // ensure owner isn't requesting to trade their own book
+      if (owner.equals(userId)) return { success: false };
       // create a new doc in Trades
       const newTrade = await Trades.insertOne({
-        bookID,
-        owner,
-        requestedBy: userId,
+        bookID: ObjectID(bookID),
+        owner: ObjectID(owner),
+        requestedBy: ObjectID(userId),
         status: 'pending'
       }).catch(err => { throw err; });
       // push trade id to owner's pending trades
