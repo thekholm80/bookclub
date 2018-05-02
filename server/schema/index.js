@@ -28,12 +28,17 @@ const typeDefs = `
     tradeStatus: String!
   }
 
+  type PendingTrades {
+    tradeList: [Trade]
+    status: String!
+  }
+
   type Query {
     login(displayName: String!, password: String!): Status
     getUserInfo(displayName: String!): User
     getAllBooks: [Book]
     getBooksByOwner(displayName: String!): [Book]
-    getPendingTradesByOwner: [Trade]
+    getPendingTradesByOwner: PendingTrades
   }
 
   type Mutation {
