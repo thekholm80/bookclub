@@ -2,6 +2,7 @@ const { login } = require('./queries/login');
 const { getUserInfo } = require('./queries/getUserInfo');
 const { getAllBooks } = require('./queries/getAllBooks');
 const { getBooksByOwner } = require('./queries/getBooksByOwner');
+const { getPendingTradesByOwner } = require('./queries/getPendingTradesByOwner');
 
 const { register } = require('./mutations/register');
 const { addBook } = require('./mutations/addBook');
@@ -12,7 +13,8 @@ module.exports = {
     login,
     getUserInfo,
     getAllBooks,
-    getBooksByOwner
+    getBooksByOwner,
+    getPendingTradesByOwner
   },
   Mutation: {
     register,

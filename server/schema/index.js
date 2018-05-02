@@ -8,6 +8,8 @@ const typeDefs = `
     lastName: String
     city: String
     state: String
+    pendingTrades: [String]
+    pendingRequests: [String]
   }
 
   type Status {
@@ -20,11 +22,18 @@ const typeDefs = `
     owner: User
   }
 
+  type Trade {
+    book: Book!
+    requestedBy: String!
+    tradeStatus: String!
+  }
+
   type Query {
     login(displayName: String!, password: String!): Status
     getUserInfo(displayName: String!): User
     getAllBooks: [Book]
     getBooksByOwner(displayName: String!): [Book]
+    getPendingTradesByOwner: [Trade]
   }
 
   type Mutation {
