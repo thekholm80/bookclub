@@ -51,6 +51,7 @@ const typeDefs = `
     register(displayName: String!, password: String!): Status
     addBook(title: String!, author: String!): Status
     requestTrade(bookID: String!): Status
+    removeBook(bookID: String!): Status
   }
 `;
 

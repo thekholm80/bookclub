@@ -8,6 +8,7 @@ const { getPendingRequestsByOwner } = require('./queries/getPendingRequestsByOwn
 const { register } = require('./mutations/register');
 const { addBook } = require('./mutations/addBook');
 const { requestTrade } = require('./mutations/requestTrade');
+const { removeBook } = require('./mutations/removeBook');
 
 module.exports = {
   Query: {
@@ -21,6 +22,7 @@ module.exports = {
   Mutation: {
     register,
     addBook,
-    requestTrade
+    requestTrade,
+    removeBook
   }
 };
