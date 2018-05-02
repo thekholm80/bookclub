@@ -6,9 +6,11 @@ const { JWT_SECRET } = require('../../utils/config');
 module.exports = {
   requestTrade: async (_, { bookID }, { mongo: { Users, Books, Trades }, req: { cookies } }) => {
     /**
-      Logs a trade request into the db by:
+      Logs a trade request into the db:
+        * Verify jwt
+        * Verify user has not previously requested this book
         * Creating a new document in Trades
-        * Adding new trade id to requestor's User.pendingRequests
+        * Adding new trade id to requestor's User.requests
         * Adding new trade id to owner's User.pendingTrades
 
       @param {object} _ unused
@@ -20,32 +22,26 @@ module.exports = {
       @returns {object} status true if success
     */
 
-    // validate jwt token
     if (!cookies.bookclub) return { status: 'no jwt' };
     return jwt.verify(cookies.bookclub, JWT_SECRET, async (error, { _id: userId }) => {
       if (error) return { status: 'invalid jwt' };
-      // find the book
-      const { owner } = await Books.findOne({
-        _id: ObjectID(bookID)
-      }).catch(err => { throw err; });
-      // ensure owner isn't requesting to trade their own book
+      const { owner } = await Books.findOne({ _id: ObjectID(bookID) }).catch(err => { throw err; });
       if (owner.equals(userId)) return { status: 'cannot trade own book' };
-      // create a new doc in Trades
+      const checkForExisting = await Trades.find({ bookID: ObjectID(bookID), requestedBy: ObjectID(userId), status: 'pending' }).toArray().catch(err => { throw err; });
+      if (checkForExisting.length) return { status: 'previous request pending' };
       const newTrade = await Trades.insertOne({
         bookID: ObjectID(bookID),
         owner: ObjectID(owner),
         requestedBy: ObjectID(userId),
         status: 'pending'
       }).catch(err => { throw err; });
-      // push trade id to owner's pending trades
       Users.findOneAndUpdate(
         { _id: ObjectID(owner) },
         { $push: { pendingTrades: newTrade.insertedId } }
       ).catch(err => { throw err; });
-      // push trade id to requestor's pending requests
       Users.findOneAndUpdate(
         { _id: ObjectID(userId) },
-        { $push: { pendingRequests: newTrade.insertedId } }
+        { $push: { requests: newTrade.insertedId } }
       ).catch(err => { throw err; });
       return { status: true };
     });

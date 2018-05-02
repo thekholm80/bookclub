@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../../utils/config');
 
 module.exports = {
-  getPendingRequestsByOwner: async (_, __, { mongo: { Users, Books, Trades }, req: { cookies } }) => {
+  getRequestsByOwner: async (_, __, { mongo: { Users, Books, Trades }, req: { cookies } }) => {
     /**
       Queries db for pending requests made by logged in user
 
@@ -20,12 +20,13 @@ module.exports = {
     if (!cookies.bookclub) return { requestList: [], status: 'no jwt' };
     return jwt.verify(cookies.bookclub, JWT_SECRET, async (error, { _id: userId }) => {
       if (error) return { requestList: [], status: 'invalid jwt' };
-      const { pendingRequests } = await Users.findOne({ _id: ObjectID(userId) }).catch(err => { throw err; });
-      if (!pendingRequests.length) return { requestList: [], status: 'none' };
-      const requestList = Promise.all(pendingRequests.map(async tradeId => {
+      const { requests } = await Users.findOne({ _id: ObjectID(userId) }).catch(err => { throw err; });
+      if (!requests.length) return { requestList: [], status: 'none' };
+      const requestList = Promise.all(requests.map(async tradeId => {
         const { bookID, status: tradeStatus } = await Trades.findOne({ _id: ObjectID(tradeId) }).catch(err => { throw err; });
-        const book = await Books.findOne({ _id: ObjectID(bookID) }).catch(err => { throw err; });
-        return { book, tradeStatus };
+        const { title, author, owner } = await Books.findOne({ _id: ObjectID(bookID) }).catch(err => { throw err; });
+        const { displayName: ownerName } = await Users.findOne({ _id: ObjectID(owner) }).catch(err => { throw err; });
+        return { book: { title, author, owner: { displayName: ownerName } }, tradeStatus };
       }));
       return { requestList, status: true };
     });

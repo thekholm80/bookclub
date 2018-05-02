@@ -30,7 +30,7 @@ module.exports = async () => {
     "state" : "...",
     "books" : [db.books._id, db.books._id, db.books._id],
     "pendingTrades" : [db.trades._id, db.trades._id, db.trades._id],
-    "pendingRequests" : [db.trades._id, db.trades._id, db.trades._id]
+    "requests" : [db.trades._id, db.trades._id, db.trades._id]
   }
 
   db.books.find().pretty():
