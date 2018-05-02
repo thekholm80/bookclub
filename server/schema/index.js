@@ -24,12 +24,17 @@ const typeDefs = `
 
   type Trade {
     book: Book!
-    requestedBy: String!
+    requestedBy: String
     tradeStatus: String!
   }
 
   type PendingTrades {
     tradeList: [Trade]
+    status: String!
+  }
+
+  type PendingRequests {
+    requestList: [Trade]
     status: String!
   }
 
@@ -39,6 +44,7 @@ const typeDefs = `
     getAllBooks: [Book]
     getBooksByOwner(displayName: String!): [Book]
     getPendingTradesByOwner: PendingTrades
+    getPendingRequestsByOwner: PendingRequests
   }
 
   type Mutation {
