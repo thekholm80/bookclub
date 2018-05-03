@@ -54,6 +54,7 @@ const typeDefs = `
     removeBook(bookID: String!): Status
     rejectTrade(tradeId: String!): Status
     acceptTrade(tradeId: String!): Status
+    cancelRequest(tradeId: String!): Status
   }
 `;
 

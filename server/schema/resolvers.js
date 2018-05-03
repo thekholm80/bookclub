@@ -11,6 +11,7 @@ const { requestTrade } = require('./mutations/requestTrade');
 const { removeBook } = require('./mutations/removeBook');
 const { rejectTrade } = require('./mutations/rejectTrade');
 const { acceptTrade } = require('./mutations/acceptTrade');
+const { cancelRequest } = require('./mutations/cancelRequest');
 
 module.exports = {
   Query: {
@@ -27,6 +28,7 @@ module.exports = {
     requestTrade,
     removeBook,
     rejectTrade,
-    acceptTrade
+    acceptTrade,
+    cancelRequest
   }
 };
