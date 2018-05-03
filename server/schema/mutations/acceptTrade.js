@@ -25,27 +25,32 @@ module.exports = {
     */
 
     if (!cookies.bookclub) return { status: 'no jwt' };
-    return jwt.verify(cookies.bookclub, JWT_SECRET, async (error, { _id: userId }) => {
-      if (error) return { status: 'invalid jwt' };
-      const { bookID, requestedBy } = await Trades.findOne({ _id: ObjectID(tradeId), status: 'pending', owner: ObjectID(userId) }).catch(err => { throw err; });
-      if (!bookID) return { status: 'invalid trade' };
-      Books.findOneAndUpdate(
-        { _id: ObjectID(bookID) },
-        { $set: { owner: ObjectID(requestedBy) } }
-      ).catch(err => { throw err; });
-      Users.findOneAndUpdate(
-        { _id: ObjectID(requestedBy) },
-        { $push: { books: ObjectID(bookID) } }
-      ).catch(err => { throw err; });
-      Users.findOneAndUpdate(
-        { _id: ObjectID(userId) },
-        { $pull: { pendingTrades: ObjectID(tradeId), books: ObjectID(bookID) } }
-      ).catch(err => { throw err; });
-      Trades.findOneAndUpdate(
-        { _id: ObjectID(tradeId) },
-        { $set: { status: 'complete' } }
-      ).catch(err => { throw err; });
-      return { status: true };
-    });
+    let userId;
+    try {
+      const { _id } = jwt.verify(cookies.bookclub, JWT_SECRET);
+      userId = _id;
+    } catch (e) {
+      userId = false;
+    }
+    if (!userId) return { status: 'invalid jwt' };
+    const { bookID, requestedBy } = await Trades.findOne({ _id: ObjectID(tradeId), status: 'pending', owner: ObjectID(userId) }).catch(err => { throw err; });
+    if (!bookID) return { status: 'invalid trade' };
+    Books.findOneAndUpdate(
+      { _id: ObjectID(bookID) },
+      { $set: { owner: ObjectID(requestedBy) } }
+    ).catch(err => { throw err; });
+    Users.findOneAndUpdate(
+      { _id: ObjectID(requestedBy) },
+      { $push: { books: ObjectID(bookID) } }
+    ).catch(err => { throw err; });
+    Users.findOneAndUpdate(
+      { _id: ObjectID(userId) },
+      { $pull: { pendingTrades: ObjectID(tradeId), books: ObjectID(bookID) } }
+    ).catch(err => { throw err; });
+    Trades.findOneAndUpdate(
+      { _id: ObjectID(tradeId) },
+      { $set: { status: 'complete' } }
+    ).catch(err => { throw err; });
+    return { status: true };
   }
 };

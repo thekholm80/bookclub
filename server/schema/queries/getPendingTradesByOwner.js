@@ -18,17 +18,22 @@ module.exports = {
     */
 
     if (!cookies.bookclub) return { tradeList: [], status: 'no jwt' };
-    return jwt.verify(cookies.bookclub, JWT_SECRET, async (error, { _id: userId }) => {
-      if (error) return { tradeList: [], status: 'invalid jwt' };
-      const { pendingTrades } = await Users.findOne({ _id: ObjectID(userId) }).catch(err => { throw err; });
-      if (!pendingTrades.length) return { tradeList: [], status: 'none' };
-      const tradeList = Promise.all(pendingTrades.map(async tradeId => {
-        const { bookID, requestedBy: requestedById, status: tradeStatus } = await Trades.findOne({ _id: ObjectID(tradeId) }).catch(err => { throw err; });
-        const book = await Books.findOne({ _id: ObjectID(bookID) }).catch(err => { throw err; });
-        const { displayName: requestedBy } = await Users.findOne({ _id: ObjectID(requestedById) }).catch(err => { throw err; });
-        return { book, requestedBy, tradeStatus };
-      }));
-      return { tradeList, status: true };
-    });
+    let userId;
+    try {
+      const { _id } = jwt.verify(cookies.bookclub, JWT_SECRET);
+      userId = _id;
+    } catch (e) {
+      userId = false;
+    }
+    if (!userId) return { status: 'invalid jwt' };
+    const { pendingTrades } = await Users.findOne({ _id: ObjectID(userId) }).catch(err => { throw err; });
+    if (!pendingTrades.length) return { tradeList: [], status: 'none' };
+    const tradeList = Promise.all(pendingTrades.map(async tradeId => {
+      const { bookID, requestedBy: requestedById, status: tradeStatus } = await Trades.findOne({ _id: ObjectID(tradeId) }).catch(err => { throw err; });
+      const book = await Books.findOne({ _id: ObjectID(bookID) }).catch(err => { throw err; });
+      const { displayName: requestedBy } = await Users.findOne({ _id: ObjectID(requestedById) }).catch(err => { throw err; });
+      return { book, requestedBy, tradeStatus };
+    }));
+    return { tradeList, status: true };
   }
 };

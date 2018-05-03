@@ -7,6 +7,9 @@ module.exports = {
   addBook: async (_, { title, author }, { mongo: { Users, Books }, req: { cookies } }) => {
     /**
       Inserts new book into database, updates user's book list
+        * Verify jwt
+        * Insert book into Books
+        * Push book id into user.books
 
       @param {object} _ unused
       @param {string} title title of book
@@ -18,22 +21,20 @@ module.exports = {
       @returns {object} status true if success
     */
 
-    // validate jwt token
     if (!cookies.bookclub) return { status: 'no jwt' };
-    return jwt.verify(cookies.bookclub, JWT_SECRET, async (err, { _id }) => {
-      if (err) return { status: 'invalid jwt' };
-      // insert new book into db
-      const result = await Books.insertOne({
-        title,
-        author,
-        owner: ObjectID(_id)
-      }).catch(error => { throw error; });
-      // push new book id into users's book list
-      Users.findOneAndUpdate(
-        { _id: ObjectID(_id) },
-        { $push: { books: result.insertedId } }
-      ).catch(error => { throw error; });
-      return { status: true };
-    });
+    let userId;
+    try {
+      const { _id } = jwt.verify(cookies.bookclub, JWT_SECRET);
+      userId = _id;
+    } catch (e) {
+      userId = false;
+    }
+    if (!userId) return { status: 'invalid jwt' };
+    const result = await Books.insertOne({ title, author, owner: ObjectID(userId) }).catch(error => { throw error; });
+    Users.findOneAndUpdate(
+      { _id: ObjectID(userId) },
+      { $push: { books: result.insertedId } }
+    ).catch(error => { throw error; });
+    return { status: true };
   }
 };

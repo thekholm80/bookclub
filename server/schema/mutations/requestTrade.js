@@ -23,27 +23,32 @@ module.exports = {
     */
 
     if (!cookies.bookclub) return { status: 'no jwt' };
-    return jwt.verify(cookies.bookclub, JWT_SECRET, async (error, { _id: userId }) => {
-      if (error) return { status: 'invalid jwt' };
-      const { owner } = await Books.findOne({ _id: ObjectID(bookID) }).catch(err => { throw err; });
-      if (owner.equals(userId)) return { status: 'cannot trade own book' };
-      const checkForExisting = await Trades.find({ bookID: ObjectID(bookID), requestedBy: ObjectID(userId), status: 'pending' }).toArray().catch(err => { throw err; });
-      if (checkForExisting.length) return { status: 'previous request pending' };
-      const newTrade = await Trades.insertOne({
-        bookID: ObjectID(bookID),
-        owner: ObjectID(owner),
-        requestedBy: ObjectID(userId),
-        status: 'pending'
-      }).catch(err => { throw err; });
-      Users.findOneAndUpdate(
-        { _id: ObjectID(owner) },
-        { $push: { pendingTrades: newTrade.insertedId } }
-      ).catch(err => { throw err; });
-      Users.findOneAndUpdate(
-        { _id: ObjectID(userId) },
-        { $push: { requests: newTrade.insertedId } }
-      ).catch(err => { throw err; });
-      return { status: true };
-    });
+    let userId;
+    try {
+      const { _id } = jwt.verify(cookies.bookclub, JWT_SECRET);
+      userId = _id;
+    } catch (e) {
+      userId = false;
+    }
+    if (!userId) return { status: 'invalid jwt' };
+    const { owner } = await Books.findOne({ _id: ObjectID(bookID) }).catch(err => { throw err; });
+    if (owner.equals(userId)) return { status: 'cannot trade own book' };
+    const checkForExisting = await Trades.find({ bookID: ObjectID(bookID), requestedBy: ObjectID(userId), status: 'pending' }).toArray().catch(err => { throw err; });
+    if (checkForExisting.length) return { status: 'previous request pending' };
+    const newTrade = await Trades.insertOne({
+      bookID: ObjectID(bookID),
+      owner: ObjectID(owner),
+      requestedBy: ObjectID(userId),
+      status: 'pending'
+    }).catch(err => { throw err; });
+    Users.findOneAndUpdate(
+      { _id: ObjectID(owner) },
+      { $push: { pendingTrades: newTrade.insertedId } }
+    ).catch(err => { throw err; });
+    Users.findOneAndUpdate(
+      { _id: ObjectID(userId) },
+      { $push: { requests: newTrade.insertedId } }
+    ).catch(err => { throw err; });
+    return { status: true };
   }
 };
