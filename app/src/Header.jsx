@@ -30,7 +30,7 @@ class Header extends Component {
   }
 
   userLogin(user) {
-    this.setState({ user, showLoginModal: false });
+    this.setState({ user, showLoginModal: false, showRegisterModal: false });
   }
 
   render() {

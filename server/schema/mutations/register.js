@@ -20,7 +20,8 @@ module.exports = {
         displayName,
         hash,
         books: [],
-        pendingTrades: []
+        pendingTrades: [],
+        requests: []
       });
       return { status: true };
     }

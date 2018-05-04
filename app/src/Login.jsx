@@ -39,14 +39,14 @@ class Login extends Component {
   }
 
   async handleLogin(client) {
-    const { data } = await client.query({
+    const { data: { login: { status } } } = await client.query({
       query: LOGIN,
       variables: {
         displayName: this.state.displayName,
         password: this.state.password
       }
     });
-    if (data.login.status === 'true') {
+    if (status === 'true') {
       this.props.userLogin(this.state.displayName);
     } else {
       this.setState({ showAlert: true });
