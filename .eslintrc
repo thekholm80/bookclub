@@ -2,7 +2,7 @@
   "extends": "airbnb",
   "rules": {
     "jsx-quotes": 0,
-    "react/jsx-curly-spacing": "always",
+    "react/jsx-curly-spacing": 0,
     "react/no-find-dom-node": 0,
     "react/no-string-refs": 0,
     "react/prop-types": 0,

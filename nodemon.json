@@ -1,0 +1,8 @@
+{
+  "verbose": true,
+  "ignore": [
+    "app/",
+    ".git",
+    "production"
+  ]
+}

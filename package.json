@@ -4,7 +4,9 @@
   "description": "fcc project",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon ./server/server.js"
+    "start": "nodemon ./server/server.js",
+    "dev": "webpack-dev-server --mode development --open",
+    "build": "webpack --mode production"
   },
   "author": "Kyle Holm",
   "license": "ISC",

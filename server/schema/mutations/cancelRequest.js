@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../../utils/config');
 
 module.exports = {
-  cancelRequest: async (_, { tradeId }, { mongo: { Users, Trades }, req: { cookies }}) => {
+  cancelRequest: async (_, { tradeId }, { mongo: { Users, Trades }, req: { cookies } }) => {
     /**
       Removes trade request from db
         * Verify jwt
