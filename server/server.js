@@ -28,7 +28,8 @@ const start = async () => {
 
   // dev only
   const corsOptions = {
-    origin: 'http://localhost:8080'
+    origin: 'http://localhost:3000',
+    credentials: true
   };
 
   // dev only: remove cors() for production
@@ -36,6 +37,7 @@ const start = async () => {
     req is exposed and passed into context to parse jwt tokens
     res is exposed and passed into context to set jwt tokens
   */
+
   app.use('/api', bodyParser.json(), cors(corsOptions), graphqlExpress((req, res) => ({
     context: { mongo, req, res },
     schema

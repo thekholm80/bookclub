@@ -10,8 +10,14 @@ import './index.css';
 
 import App from './App';
 
+/**
+    TODO:
+
+    httpLink uri needs to be udated before production build
+ */
+
 const httpLink = new HttpLink({
-  uri: 'localhost:8000/api',
+  uri: 'http://localhost:8000/api',
   credentials: 'include'
 });
 

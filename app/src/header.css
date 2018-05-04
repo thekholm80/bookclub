@@ -2,3 +2,14 @@
   display: flex;
   justify-content: space-between;
 }
+
+.headerForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.headerForm input[type=text], .header div, h3 {
+  margin: 5px;
+}

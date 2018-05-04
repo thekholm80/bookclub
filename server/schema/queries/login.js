@@ -19,8 +19,9 @@ module.exports = {
       @returns {object} success true if login successful
     */
 
-    const { _id, hash } = await Users.findOne({ displayName }).catch(err => { throw err; });
-    if (!_id) return { status: false };
+    const response = await Users.findOne({ displayName }).catch(err => { throw err; });
+    if (!response) return { status: false };
+    const { _id, hash } = response;
     const match = await verifyPassword(password, hash).catch(err => { throw err; });
     if (!match) return { status: false };
     const user = { _id, displayName };
