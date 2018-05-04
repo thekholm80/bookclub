@@ -3,6 +3,13 @@ import { Modal, ButtonGroup, Button, Alert } from 'react-bootstrap';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
+/**
+  TODO:
+
+  Have server register mutation set cookie so login
+  is not required after register
+*/
+
 const REGISTER = gql`
   mutation register($displayName: String!, $password: String!) {
     register(displayName: $displayName, password: $password) {
@@ -18,10 +25,13 @@ class Register extends Component {
     this.state = {
       displayName: '',
       password: '',
-      showAlert: false
+      showAlert: false,
+      alertText: ''
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.validateSubmit = this.validateSubmit.bind(this);
+    this.showValidationError = this.showValidationError.bind(this);
     this.checkStatus = this.checkStatus.bind(this);
   }
 
@@ -33,17 +43,25 @@ class Register extends Component {
     }
   }
 
+  validateSubmit() {
+    return this.state.displayName !== '' && this.state.password !== '';
+  }
+
+  showValidationError() {
+    this.setState({ showAlert: true, alertText: 'User Name and Password are required' });
+  }
+
   checkStatus({ register: { status } }) {
     if (status === 'false') {
-      this.setState({ showAlert: true });
+      this.setState({ showAlert: true, alertText: 'User Name is taken' });
     } else {
-      this.props.userLogin(this.state.displayName);
+      this.props.toggleRegisterModal();
     }
   }
 
   render() {
     return (
-      <Mutation mutation={ REGISTER } onCompleted={ data => { this.checkStatus(data) } }>
+      <Mutation mutation={ REGISTER } onCompleted={ data => { this.checkStatus(data); } }>
         { (register => (
           <Modal show={ this.props.showRegisterModal } onHide={ this.props.toggleRegisterModal }>
             <Modal.Header closeButton>
@@ -52,7 +70,7 @@ class Register extends Component {
             <Modal.Body>
               { this.state.showAlert && (
                 <Alert bsStyle='danger'>
-                  User name taken or invalid password
+                  { this.state.alertText }
                 </Alert>
               ) }
               <form className='headerForm'>
@@ -75,7 +93,16 @@ class Register extends Component {
             <Modal.Footer>
               <ButtonGroup>
                 <Button onClick={ () => {
-                  register({ variables: { displayName: this.state.displayName, password: this.state.password } });
+                  if (this.validateSubmit()) {
+                    register({
+                      variables: {
+                        displayName: this.state.displayName,
+                        password: this.state.password
+                      }
+                    });
+                  } else {
+                    this.showValidationError();
+                  }
                 } }
                 >
                   Register
