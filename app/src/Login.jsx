@@ -47,7 +47,7 @@ class Login extends Component {
       }
     });
     if (status === 'true') {
-      this.props.userLogin(this.state.displayName);
+      this.props.userLogin(this.state.displayName, this.props.client);
     } else {
       this.setState({ showAlert: true });
     }
@@ -68,6 +68,7 @@ class Login extends Component {
                 </Alert>
               ) }
               <form className='headerForm'>
+                <label htmlFor='loginDisplayName'>User Name</label>
                 <input
                   id='loginDisplayName'
                   type='text'
@@ -75,6 +76,7 @@ class Login extends Component {
                   value={ this.state.displayName }
                   onChange={ this.handleInputChange }
                 />
+                <label htmlFor='loginPassword'>Password</label>
                 <input
                   id='loginPassword'
                   type='password'

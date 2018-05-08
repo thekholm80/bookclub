@@ -55,6 +55,7 @@ const typeDefs = `
     rejectTrade(tradeId: String!): Status
     acceptTrade(tradeId: String!): Status
     cancelRequest(tradeId: String!): Status
+    updateUserInfo(firstName: String, lastName: String, city: String, state: String): Status
   }
 `;
 

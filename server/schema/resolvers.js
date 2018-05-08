@@ -12,6 +12,7 @@ const { removeBook } = require('./mutations/removeBook');
 const { rejectTrade } = require('./mutations/rejectTrade');
 const { acceptTrade } = require('./mutations/acceptTrade');
 const { cancelRequest } = require('./mutations/cancelRequest');
+const { updateUserInfo } = require('./mutations/updateUserInfo');
 
 module.exports = {
   Query: {
@@ -29,6 +30,7 @@ module.exports = {
     removeBook,
     rejectTrade,
     acceptTrade,
-    cancelRequest
+    cancelRequest,
+    updateUserInfo
   }
 };

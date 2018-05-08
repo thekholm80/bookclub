@@ -25,30 +25,36 @@ class Register extends Component {
     this.state = {
       displayName: '',
       password: '',
+      repeatPassword: '',
       showAlert: false,
       alertText: ''
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.validateSubmit = this.validateSubmit.bind(this);
-    this.showValidationError = this.showValidationError.bind(this);
     this.checkStatus = this.checkStatus.bind(this);
   }
 
   handleInputChange({ target: { id, value } }) {
     if (id === 'registerDisplayName') {
       this.setState({ displayName: value });
+    } else if (id === 'registerRepeatPassword') {
+      this.setState({ repeatPassword: value });
     } else {
       this.setState({ password: value });
     }
   }
 
   validateSubmit() {
-    return this.state.displayName !== '' && this.state.password !== '';
-  }
-
-  showValidationError() {
-    this.setState({ showAlert: true, alertText: 'User Name and Password are required' });
+    if (!(this.state.password === this.state.repeatPassword)) {
+      this.setState({ showAlert: true, alertText: 'Passwords must match' });
+      return false;
+    }
+    if (this.state.displayName === '' || this.state.password === '' || this.state.repeatPassword === '') {
+      this.setState({ showAlert: true, alertText: 'User Name and Password are required' });
+      return false;
+    }
+    return true;
   }
 
   checkStatus({ register: { status } }) {
@@ -74,6 +80,7 @@ class Register extends Component {
                 </Alert>
               ) }
               <form className='headerForm'>
+                <label htmlFor='registerDisplayName'>User Name</label>
                 <input
                   id='registerDisplayName'
                   type='text'
@@ -81,11 +88,20 @@ class Register extends Component {
                   value={ this.state.displayName }
                   onChange={ this.handleInputChange }
                 />
+                <label htmlFor='registerPassword'>Password</label>
                 <input
                   id='registerPassword'
                   type='password'
                   placeholder='Password'
                   value={ this.state.password }
+                  onChange={ this.handleInputChange }
+                />
+                <label htmlFor='registerRepeatPassword'>Repeat Password</label>
+                <input
+                  id='registerRepeatPassword'
+                  type='password'
+                  placeholder='Repeat Password'
+                  value={ this.state.repeatPassword }
                   onChange={ this.handleInputChange }
                 />
               </form>
@@ -100,8 +116,6 @@ class Register extends Component {
                         password: this.state.password
                       }
                     });
-                  } else {
-                    this.showValidationError();
                   }
                 } }
                 >
