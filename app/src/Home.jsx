@@ -2,8 +2,12 @@ import React from 'react';
 
 import './home.css';
 
-const Home = () => (
-  <div className='home'>Hello World</div>
+import GlobalBookList from './GlobalBookList';
+
+const Home = props => (
+  <div className='home'>
+    <GlobalBookList { ...props } />
+  </div>
 );
 
 export default Home;

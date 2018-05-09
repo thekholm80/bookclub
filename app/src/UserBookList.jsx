@@ -52,6 +52,7 @@ class UserBookList extends Component {
     });
     this.setState({ selected: [], showAlert: false }, () => {
       this.props.refetch();
+      this.props.globalRefetch();
     });
   }
 
@@ -70,10 +71,16 @@ class UserBookList extends Component {
   render() {
     const bookList = this.props.data.getBooksByOwner.map(book => (
       <li key={ book._id }>
-        <div>Title:&nbsp;</div>
-        <h3>{ book.title }</h3>
-        <div>Author:&nbsp;</div>
-        <h3>{ book.author }</h3>
+        <div>
+          <div>
+            <span>Title:&nbsp;</span>
+            { book.title }
+          </div>
+          <div>
+            <span>Author:&nbsp;</span>
+            { book.author }
+          </div>
+        </div>
         <Button
           onClick={ () => { this.select(book._id); } }
           active={ this.state.selected.includes(book._id) }
@@ -94,7 +101,9 @@ class UserBookList extends Component {
               { removeBook => (
                 <Button
                   bsStyle='danger'
-                  onClick={ () => { this.deleteBooks(removeBook); } }
+                  onClick={ () => {
+                    this.deleteBooks(removeBook);
+                  } }
                 >
                   Yes, Delete Selected Book(s)
                 </Button>
@@ -111,6 +120,7 @@ class UserBookList extends Component {
           showAddBookModal={ this.state.showAddBookModal }
           toggleAddBookModal={ this.toggleAddBookModal }
           refetch={ this.props.refetch }
+          globalRefetch={ this.props.globalRefetch }
         />
         <Modal.Header>Your Books</Modal.Header>
         <Modal.Body>

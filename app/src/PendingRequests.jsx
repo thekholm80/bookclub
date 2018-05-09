@@ -41,11 +41,18 @@ class PendingRequests extends Component {
     const pendingList = this.props.data.getPendingTradesByOwner.tradeList.map(item => (
       <li key={ item.tradeId }>
         <div>
-          <h2>From: { item.requestedBy }</h2>
-          <div>Title:&nbsp;</div>
-          <h3>{ item.book.title }</h3>
-          <div>Author:&nbsp;</div>
-          <h3>{ item.book.author }</h3>
+          <div>
+            <span>Title:&nbsp;</span>
+            { item.book.title }
+          </div>
+          <div>
+            <span>Author:&nbsp;</span>
+            { item.book.author }
+          </div>
+          <div>
+            <span>Requested By:&nbsp;</span>
+            { item.requestedBy }
+          </div>
         </div>
         <ButtonGroup>
           <Mutation mutation={ ACCEPT } variables={ { tradeId: item.tradeId } }>

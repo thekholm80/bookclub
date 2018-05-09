@@ -68,22 +68,26 @@ class Login extends Component {
                 </Alert>
               ) }
               <form className='headerForm'>
-                <label htmlFor='loginDisplayName'>User Name</label>
-                <input
-                  id='loginDisplayName'
-                  type='text'
-                  placeholder='User Name'
-                  value={ this.state.displayName }
-                  onChange={ this.handleInputChange }
-                />
-                <label htmlFor='loginPassword'>Password</label>
-                <input
-                  id='loginPassword'
-                  type='password'
-                  placeholder='Password'
-                  value={ this.state.password }
-                  onChange={ this.handleInputChange }
-                />
+                <div className='headerForm-group'>
+                  <label htmlFor='loginDisplayName'>User Name</label>
+                  <input
+                    id='loginDisplayName'
+                    type='text'
+                    placeholder='User Name'
+                    value={ this.state.displayName }
+                    onChange={ this.handleInputChange }
+                  />
+                </div>
+                <div className='headerForm-group'>
+                  <label htmlFor='loginPassword'>Password</label>
+                  <input
+                    id='loginPassword'
+                    type='password'
+                    placeholder='Password'
+                    value={ this.state.password }
+                    onChange={ this.handleInputChange }
+                  />
+                </div>
               </form>
             </Modal.Body>
             <Modal.Footer>

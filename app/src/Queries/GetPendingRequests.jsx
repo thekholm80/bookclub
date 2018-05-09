@@ -21,7 +21,10 @@ const GET_PENDING = gql`
 `;
 
 const GetPendingRequests = props => (
-  <Query query={ GET_PENDING }>
+  <Query
+    query={ GET_PENDING }
+    skip={ !props.showPendingModal }
+  >
     { ({ loading, error, data, refetch }) => {
       if (loading) return null;
       if (error) return error;

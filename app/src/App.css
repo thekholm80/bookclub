@@ -7,13 +7,3 @@
   width: 100vw;
   height: 100vh;
 }
-
-.profile {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-  flex-grow: 2;
-}

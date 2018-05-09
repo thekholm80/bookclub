@@ -42,6 +42,7 @@ class AddBook extends Component {
   complete() {
     this.setState({ title: '', author: '' }, () => {
       this.props.refetch();
+      this.props.globalRefetch();
       this.props.toggleAddBookModal();
     });
   }
@@ -68,43 +69,49 @@ class AddBook extends Component {
             <Modal.Body>
               { alert }
               <form className='headerForm'>
-                <label htmlFor='addBookTitle'>Title</label>
-                <input
-                  id='addBookTitle'
-                  type='text'
-                  value={ this.state.title }
-                  placeholder='Book Title'
-                  onChange={ this.handleTitleChange }
-                />
-                <label htmlFor='addBookAuthor'>Author</label>
-                <input
-                  id='addBookAuthor'
-                  type='text'
-                  value={ this.state.author }
-                  placeholder='Book Author'
-                  onChange={ this.handleAuthorChange }
-                />
-                <ButtonGroup>
-                  <Button
-                    onClick={() => {
-                      if (this.state.author && this.state.title) {
-                        addBook({
-                          variables: {
-                            title: this.state.title,
-                            author: this.state.author
-                          }
-                        });
-                      } else {
-                        this.showAlert();
-                      }
-                    } }
-                  >
-                    Submit
-                  </Button>
-                  <Button onClick={ this.props.toggleAddBookModal }>Cancel</Button>
-                </ButtonGroup>
+                <div className='headerForm-group'>
+                  <label htmlFor='addBookTitle'>Title</label>
+                  <input
+                    id='addBookTitle'
+                    type='text'
+                    value={ this.state.title }
+                    placeholder='Book Title'
+                    onChange={ this.handleTitleChange }
+                  />
+                </div>
+                <div className='headerForm-group'>
+                  <label htmlFor='addBookAuthor'>Author</label>
+                  <input
+                    id='addBookAuthor'
+                    type='text'
+                    value={ this.state.author }
+                    placeholder='Book Author'
+                    onChange={ this.handleAuthorChange }
+                  />
+                </div>
               </form>
             </Modal.Body>
+            <Modal.Footer>
+              <ButtonGroup>
+                <Button
+                  onClick={() => {
+                    if (this.state.author && this.state.title) {
+                      addBook({
+                        variables: {
+                          title: this.state.title,
+                          author: this.state.author
+                        }
+                      });
+                    } else {
+                      this.showAlert();
+                    }
+                  } }
+                >
+                  Submit
+                </Button>
+                <Button onClick={ this.props.toggleAddBookModal }>Cancel</Button>
+              </ButtonGroup>
+            </Modal.Footer>
           </Modal>
          ) }
       </Mutation>

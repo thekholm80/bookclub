@@ -114,38 +114,46 @@ class Profile extends Component {
             <Modal.Body>
               { this.state.alert && alert }
               <form className='headerForm'>
-                <label htmlFor='profileFirstName'>First Name</label>
-                <input
-                  id='profileFirstName'
-                  type='text'
-                  placeholder='First Name'
-                  value={ firstNameVal() }
-                  onChange={ this.updateFirstName }
-                />
-                <label htmlFor='profileLastName'>Last Name</label>
-                <input
-                  id='profileLastName'
-                  type='text'
-                  placeholder='Last Name'
-                  value={ lastNameVal() }
-                  onChange={ this.updateLastName }
-                />
-                <label htmlFor='profileCity'>City</label>
-                <input
-                  id='profileCity'
-                  type='text'
-                  placeholder='City'
-                  value={ cityVal() }
-                  onChange={ this.updateCity }
-                />
-                <label htmlFor='profileState'>State</label>
-                <input
-                  id='profileState'
-                  type='text'
-                  placeholder='State'
-                  value={ stateVal() }
-                  onChange={ this.updateState }
-                />
+                <div className='headerForm-group'>
+                  <label htmlFor='profileFirstName'>First Name</label>
+                  <input
+                    id='profileFirstName'
+                    type='text'
+                    placeholder='First Name'
+                    value={ firstNameVal() }
+                    onChange={ this.updateFirstName }
+                  />
+                </div>
+                <div className='headerForm-group'>
+                  <label htmlFor='profileLastName'>Last Name</label>
+                  <input
+                    id='profileLastName'
+                    type='text'
+                    placeholder='Last Name'
+                    value={ lastNameVal() }
+                    onChange={ this.updateLastName }
+                  />
+                </div>
+                <div className='headerForm-group'>
+                  <label htmlFor='profileCity'>City</label>
+                  <input
+                    id='profileCity'
+                    type='text'
+                    placeholder='City'
+                    value={ cityVal() }
+                    onChange={ this.updateCity }
+                  />
+                </div>
+                <div className='headerForm-group'>
+                  <label htmlFor='profileState'>State</label>
+                  <input
+                    id='profileState'
+                    type='text'
+                    placeholder='State'
+                    value={ stateVal() }
+                    onChange={ this.updateState }
+                  />
+                </div>
               </form>
             </Modal.Body>
             <Modal.Footer>

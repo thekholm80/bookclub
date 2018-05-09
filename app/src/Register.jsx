@@ -80,30 +80,36 @@ class Register extends Component {
                 </Alert>
               ) }
               <form className='headerForm'>
-                <label htmlFor='registerDisplayName'>User Name</label>
-                <input
-                  id='registerDisplayName'
-                  type='text'
-                  placeholder='User Name'
-                  value={ this.state.displayName }
-                  onChange={ this.handleInputChange }
-                />
-                <label htmlFor='registerPassword'>Password</label>
-                <input
-                  id='registerPassword'
-                  type='password'
-                  placeholder='Password'
-                  value={ this.state.password }
-                  onChange={ this.handleInputChange }
-                />
-                <label htmlFor='registerRepeatPassword'>Repeat Password</label>
-                <input
-                  id='registerRepeatPassword'
-                  type='password'
-                  placeholder='Repeat Password'
-                  value={ this.state.repeatPassword }
-                  onChange={ this.handleInputChange }
-                />
+                <div className='headerForm-group'>
+                  <label htmlFor='registerDisplayName'>User Name</label>
+                  <input
+                    id='registerDisplayName'
+                    type='text'
+                    placeholder='User Name'
+                    value={ this.state.displayName }
+                    onChange={ this.handleInputChange }
+                  />
+                </div>
+                <div className='headerForm-group'>
+                  <label htmlFor='registerPassword'>Password</label>
+                  <input
+                    id='registerPassword'
+                    type='password'
+                    placeholder='Password'
+                    value={ this.state.password }
+                    onChange={ this.handleInputChange }
+                  />
+                </div>
+                <div className='headerForm-group'>
+                  <label htmlFor='registerRepeatPassword'>Repeat Password</label>
+                  <input
+                    id='registerRepeatPassword'
+                    type='password'
+                    placeholder='Repeat Password'
+                    value={ this.state.repeatPassword }
+                    onChange={ this.handleInputChange }
+                  />
+                </div>
               </form>
             </Modal.Body>
             <Modal.Footer>

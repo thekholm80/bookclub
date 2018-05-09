@@ -12,17 +12,37 @@
   align-items: center;
 }
 
-.headerForm input[type=text], .header div, h3 {
-  margin: 5px;
+.headerForm-group {
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
 }
 
 li {
+  display: flex;
+  justify-content: space-between;
+
   list-style-type: none;
   margin: 5px;
   border-bottom: 1px solid lightgray;
   padding-bottom: 1px;
 }
 
-li h2 {
-  text-align: center;
+li span {
+  font-weight: bold;
+}
+
+.fix-width {
+  width: 60vw;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  flex-grow: 2;
 }

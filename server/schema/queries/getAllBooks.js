@@ -13,9 +13,9 @@ module.exports = {
     */
 
     const bookList = await Books.find({}).toArray();
-    const bookListWithUsers = await Promise.all(bookList.map(async ({ title, author, owner }) => {
+    const bookListWithUsers = await Promise.all(bookList.map(async ({ _id, title, author, owner }) => {
       const user = await Users.findOne({ _id: ObjectID(owner) });
-      return { title, author, owner: user };
+      return { _id, title, author, owner: user };
     }));
     return bookListWithUsers;
   }

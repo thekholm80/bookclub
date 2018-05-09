@@ -19,7 +19,7 @@ const toolTip = (
 );
 
 const RequestCount = props => (
-  <Button bsStyle="danger" onClick={ props.togglePendingModal }>
+  <Button bsStyle="info" onClick={ props.togglePendingModal }>
     <OverlayTrigger placement='left' overlay={ toolTip }>
       <Badge>
         { props.count }
