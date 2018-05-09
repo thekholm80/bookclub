@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, Alert } from 'react-bootstrap';
+import { Modal, Button, ButtonGroup, Alert } from 'react-bootstrap';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -149,26 +149,28 @@ class Profile extends Component {
               </form>
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={ () => {
-                const {
-                  firstName,
-                  lastName,
-                  city,
-                  state
-                } = this.state;
-                updateInfo({
-                  variables: {
+              <ButtonGroup>
+                <Button onClick={ () => {
+                  const {
                     firstName,
                     lastName,
                     city,
                     state
-                  }
-                });
-                } }
-              >
-                Update
-              </Button>
-              <Button onClick={ this.closeModal }>Close</Button>
+                  } = this.state;
+                  updateInfo({
+                    variables: {
+                      firstName,
+                      lastName,
+                      city,
+                      state
+                    }
+                  });
+                  } }
+                >
+                  Update
+                </Button>
+                <Button onClick={ this.closeModal }>Close</Button>
+              </ButtonGroup>
             </Modal.Footer>
           </Modal>
         ) }

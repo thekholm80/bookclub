@@ -47,7 +47,7 @@ class Login extends Component {
       }
     });
     if (status === 'true') {
-      this.props.userLogin(this.state.displayName, this.props.client);
+      this.props.userLogin(this.state.displayName);
     } else {
       this.setState({ showAlert: true });
     }

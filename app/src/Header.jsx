@@ -1,24 +1,16 @@
 import React, { Component } from 'react';
-import { Button, ButtonGroup, Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, ButtonGroup } from 'react-bootstrap';
 import { ApolloConsumer } from 'react-apollo';
-import gql from 'graphql-tag';
 
 import './header.css';
 
 import Login from './Login';
 import Register from './Register';
-import GetUserInfoQuery from './GetUserInfoQuery';
-
-const GET_PENDING_TRADES = gql`
-  query getPendingTradesByOwner {
-    getPendingTradesByOwner {
-      tradeList {
-        requestedBy
-      }
-      status
-    }
-  }
-`;
+import GetUserInfo from './Queries/GetUserInfo';
+import GetPendingRequests from './Queries/GetPendingRequests';
+import PendingCount from './PendingCount';
+import BookCount from './BookCount';
+import RequestCount from './RequestCount';
 
 class Header extends Component {
   constructor(props) {
@@ -29,12 +21,13 @@ class Header extends Component {
       showLoginModal: false,
       showRegisterModal: false,
       showProfileModal: false,
-      pendingCount: 0
+      showPendingModal: false
     };
 
     this.toggleLoginModal = this.toggleLoginModal.bind(this);
     this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
     this.toggleProfileModal = this.toggleProfileModal.bind(this);
+    this.togglePendingModal = this.togglePendingModal.bind(this);
     this.userLogin = this.userLogin.bind(this);
   }
 
@@ -50,50 +43,28 @@ class Header extends Component {
     this.setState({ showProfileModal: !this.state.showProfileModal });
   }
 
-  async userLogin(user, client) {
-    const {
-      data: {
-        getPendingTradesByOwner: {
-          status,
-          tradeList
-        }
-      }
-    } = await client.query({ query: GET_PENDING_TRADES });
-    if (status === 'true') {
-      this.setState({
-        user,
-        showLoginModal: false,
-        showRegisterModal: false,
-        pendingCount: tradeList.length
-      });
-    } else {
-      this.setState({
-        user,
-        showLoginModal: false,
-        showRegisterModal: false
-      });
-    }
+  togglePendingModal() {
+    this.setState({ showPendingModal: !this.state.showPendingModal });
+  }
+
+  userLogin(user) {
+    this.setState({
+      user,
+      showLoginModal: false,
+      showRegisterModal: false
+    });
   }
 
   render() {
-    const toolTip = (
-      <Tooltip id='tooltip'>Trade Requests</Tooltip>
-    );
     const loginRegisterView = this.state.user
       ? (
         <ButtonGroup>
           <Button onClick={ this.toggleProfileModal }>
             Hello, { this.state.user }&nbsp;
           </Button>
-          { this.state.pendingCount > 0 && (
-            <Button onClick={ this.toggleProfileModal }>
-              <OverlayTrigger placement='left' overlay={ toolTip }>
-                <Badge>
-                  { this.state.pendingCount }
-                </Badge>
-              </OverlayTrigger>
-            </Button>
-          ) }
+          <PendingCount togglePendingModal={ this.togglePendingModal } user={ this.state.user } />
+          <RequestCount togglePendingModal={ this.togglePendingModal } user={ this.state.user } />
+          <BookCount togglePendingModal={ this.togglePendingModal } user={ this.state.user } />
         </ButtonGroup>
       )
       : (
@@ -117,10 +88,14 @@ class Header extends Component {
               showRegisterModal={ this.state.showRegisterModal }
               userLogin={ this.userLogin }
             />
-            <GetUserInfoQuery
+            <GetUserInfo
               toggleProfileModal={ this.toggleProfileModal }
               showProfileModal={ this.state.showProfileModal }
               displayName={ this.state.user }
+            />
+            <GetPendingRequests
+              togglePendingModal={ this.togglePendingModal }
+              showPendingModal={ this.state.showPendingModal }
             />
             <h3>thekholm80&apos;s Book Trading Club</h3>
             { loginRegisterView }

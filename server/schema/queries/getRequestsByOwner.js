@@ -32,7 +32,7 @@ module.exports = {
       const { bookID, status: tradeStatus } = await Trades.findOne({ _id: ObjectID(tradeId) }).catch(err => { throw err; });
       const { title, author, owner } = await Books.findOne({ _id: ObjectID(bookID) }).catch(err => { throw err; });
       const { displayName: ownerName } = await Users.findOne({ _id: ObjectID(owner) }).catch(err => { throw err; });
-      return { book: { title, author, owner: { displayName: ownerName } }, tradeStatus };
+      return { book: { title, author, owner: { displayName: ownerName } }, tradeStatus, tradeId };
     }));
     return { requestList, status: true };
   }

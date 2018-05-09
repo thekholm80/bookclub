@@ -15,3 +15,14 @@
 .headerForm input[type=text], .header div, h3 {
   margin: 5px;
 }
+
+li {
+  list-style-type: none;
+  margin: 5px;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 1px;
+}
+
+li h2 {
+  text-align: center;
+}

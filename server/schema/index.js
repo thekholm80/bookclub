@@ -23,6 +23,7 @@ const typeDefs = `
   }
 
   type Trade {
+    tradeId: String!
     book: Book!
     requestedBy: String
     tradeStatus: String!
