@@ -20,6 +20,7 @@ const typeDefs = `
     title: String!
     author: String!
     owner: User
+    _id: String
   }
 
   type Trade {

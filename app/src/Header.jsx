@@ -11,6 +11,7 @@ import GetPendingRequests from './Queries/GetPendingRequests';
 import PendingCount from './PendingCount';
 import BookCount from './BookCount';
 import RequestCount from './RequestCount';
+import GetUserBooks from './Queries/GetUserBooks';
 
 class Header extends Component {
   constructor(props) {
@@ -21,13 +22,15 @@ class Header extends Component {
       showLoginModal: false,
       showRegisterModal: false,
       showProfileModal: false,
-      showPendingModal: false
+      showPendingModal: false,
+      showUserBookModal: false
     };
 
     this.toggleLoginModal = this.toggleLoginModal.bind(this);
     this.toggleRegisterModal = this.toggleRegisterModal.bind(this);
     this.toggleProfileModal = this.toggleProfileModal.bind(this);
     this.togglePendingModal = this.togglePendingModal.bind(this);
+    this.toggleUserBookModal = this.toggleUserBookModal.bind(this);
     this.userLogin = this.userLogin.bind(this);
   }
 
@@ -47,6 +50,10 @@ class Header extends Component {
     this.setState({ showPendingModal: !this.state.showPendingModal });
   }
 
+  toggleUserBookModal() {
+    this.setState({ showUserBookModal: !this.state.showUserBookModal });
+  }
+
   userLogin(user) {
     this.setState({
       user,
@@ -64,7 +71,7 @@ class Header extends Component {
           </Button>
           <PendingCount togglePendingModal={ this.togglePendingModal } user={ this.state.user } />
           <RequestCount togglePendingModal={ this.togglePendingModal } user={ this.state.user } />
-          <BookCount togglePendingModal={ this.togglePendingModal } user={ this.state.user } />
+          <BookCount togglePendingModal={ this.toggleUserBookModal } user={ this.state.user } />
         </ButtonGroup>
       )
       : (
@@ -96,6 +103,11 @@ class Header extends Component {
             <GetPendingRequests
               togglePendingModal={ this.togglePendingModal }
               showPendingModal={ this.state.showPendingModal }
+            />
+            <GetUserBooks
+              toggleUserBookModal={ this.toggleUserBookModal }
+              showUserBookModal={ this.state.showUserBookModal }
+              user={ this.state.user }
             />
             <h3>thekholm80&apos;s Book Trading Club</h3>
             { loginRegisterView }
